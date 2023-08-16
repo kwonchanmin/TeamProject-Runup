@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="question">
+   
+   <select id="getQuestionByKeyword" parameterType="String" resultType="Question">
+		SELECT * FROM question WHERE questionTitle LIKE CONCAT('%', #{keyword},'%')
+   </select>
+   
+   <insert id="createQuestion" parameterType="Question">
+		INSERT INTO question (QuestionCategoryBig, QuestionCategoryMedium, QuestionChoice, 
+		QuestionTitle, QuestionContent, QuestionWriter, UserNum, QuestionDate)
+		VALUES ( #{questionCategoryBig}, #{questionCategoryMedium}, #{questionChoice}, 
+			#{questionTitle}, #{questionContent}, #{questionWriter}, #{userNum}, Now())
+   </insert>
+   
+   <select id="searchAllQuestion" parameterType="Integer" resultType="Question">
+   		SELECT *
+   		FROM question
+   		ORDER BY QuestionDate DESC;
+   </select>
+   
+   <select id="searchRequest" parameterType="Integer" resultType="Question">
+   		SELECT QuestionNum, QuestionCategoryMedium, QuestionChoice, QuestionTitle,
+   		QuestionWriter, QuestionDate, QuestionLike 
+   		FROM question 
+   		WHERE QuestionChoice = #{questionChoice}
+   		ORDER BY QuestionDate DESC;
+   </select>
+   
+   <select id="searchCounsel" parameterType="Integer" resultType="Question">
+   		SELECT QuestionNum, QuestionCategoryMedium, QuestionChoice, QuestionTitle,
+   		QuestionWriter, QuestionDate, QuestionLike 
+   		FROM question 
+   		WHERE QuestionChoice = #{questionChoice} 
+   		ORDER BY QuestionDate DESC;
+   </select>
+   
+   <select id="openQuestion" parameterType="Integer" resultType="Question">
+		SELECT * FROM question WHERE QuestionNum = #{QuestionNum}
+   </select>
+   
+   <update id="updateQuestion" parameterType="Question">
+   		UPDATE question SET QuestionChoice = #{questionChoice}, QuestionTitle = #{questionTitle}, QuestionContent = #{questionContent}
+   		WHERE userNum = #{userNum} and QuestionNum = #{questionNum}
+   </update>
+   
+   <delete id="deleteQuestion" parameterType="Integer">
+   		DELETE FROM question
+		WHERE QuestionNum = #{questionNum}
+   </delete>
+   
+   <insert id="createQuestionComment" parameterType="QuestionComment">
+   		INSERT INTO questioncomment(QcommentContent, QcommentWriter, QuestionNum)
+   		VALUES (#{qCommentContent}, #{qCommentWriter}, #{questionNum})
+   </insert>
+   
+   <update id="updateQuestionComment" parameterType="QuestionComment">
+   		UPDATE questioncomment SET QcommentContent = #{qCommentContent}
+   		WHERE QuestionNum = #{questionNum} AND QcommentNum = #{qCommentNum}
+   </update>
+   
+   <delete id="deleteQuestionComment" parameterType="Integer">
+   		DELETE FROM questioncomment
+   		WHERE QcommentNum = #{qCommentNum}
+   </delete>
+   
+   <select id="searchQuestionComment" parameterType="Integer" resultType="QuestionComment">
+   		SELECT 
+   			q.QcommentNum,
+   			q.QcommentContent,
+   			q.QcommentWriter,
+   			q.QuestionNum,
+   			q.QcommentDate,
+   			u.UserNum,
+   			u.UserUrl
+   		FROM questioncomment q
+   		JOIN user u ON u.UserNickname = q.QcommentWriter
+   		WHERE QuestionNum = #{questionNum}
+   		ORDER BY QcommentDate ASC;
+   </select>
+   
+   <select id="searchOneQuestionComment" parameterType="Integer" resultType="QuestionComment">
+   		SELECT 
+   			q.QcommentNum,
+   			q.QcommentContent,
+   			q.QcommentWriter,
+   			q.QuestionNum,
+   			q.QcommentDate,
+   			u.UserUrl
+   		FROM questioncomment q
+   		JOIN user u ON u.UserNickname = q.QcommentWriter
+   		WHERE QcommentNum = #{qCommentNum}
+   </select>
+   
+   <delete id="deleteQuestionLike" parameterType="QuestionLike">
+   		DELETE FROM questionlike
+   		WHERE UserNum = #{userNum} AND QuestionNum = #{questionNum}
+   </delete>
+   
+   <insert id="createQuestionLike" parameterType="QuestionLike">
+   		INSERT INTO questionlike (QlikeNum, UserNum, QuestionNum)
+   		VALUES(#{qlikeNum}, #{userNum}, #{questionNum})
+   </insert>
+   
+   <update id="decreaseLike" parameterType="QuestionLike">
+   		UPDATE question SET QuestionLike = QuestionLike -1
+   		WHERE QuestionNum = #{questionNum}
+   </update>
+   
+   <update id="increaseLike" parameterType="QuestionLike">
+   		UPDATE question SET QuestionLike = QuestionLike +1
+   		WHERE QuestionNum = #{questionNum}
+   </update>
+   
+   <select id="searchQuestionLike" parameterType="Integer" resultType="Integer">
+		SELECT QuestionLike FROM question WHERE QuestionNum = #{questionNum}
+   </select>
+
+</mapper>

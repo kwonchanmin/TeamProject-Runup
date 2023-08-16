@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="report">
+
+   <select id="getReportList" resultType="Report">
+   	 select reportNum, reporter, accused, reportContent, reportResult, reportCategory
+   	 from report 
+   </select>
+   
+   <select id="getReport" parameterType="int" resultType="Report">
+   	 select *
+   	 from report where reportNum = #{reportNum}
+   </select>
+   
+   <select id="getReportImage" parameterType="int" resultType="String">
+   	 select reportFile
+   	 from report where reportNum = #{reportNum}
+   </select>
+   
+   <insert id="createReport" parameterType="Report">
+     insert into report(reporter, accused, reportContent, reportCategory, reportFile, userNum) 
+     values (#{reporter},#{accused},#{reportContent},#{reportCategory},#{reportFile},#{userNum})
+   </insert>
+   
+   <update id="updateReport" parameterType="Report">
+   	 update report set reporter = #{reporter}, accused = #{accused}, reportContent = #{reportContent}, 
+   	 reportCategory = #{reportCategory}
+   	 where reportNum = #{reportNum}
+   </update>
+   
+   <update id="updateReportFile" parameterType="Report">
+   	 update report set reportFile = #{reportFile}
+   	 where reportNum = #{reportNum}
+   </update>
+   
+   <update id="updateReportResult" parameterType="Report">
+   	 update report set reportResult = #{reportResult}
+   	 where reportNum = #{reportNum}
+   </update>
+   
+   <delete id="deleteReport" parameterType="Report">
+     delete from report where reportNum = #{reportNum}
+   </delete>
+   
+</mapper>

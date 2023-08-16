@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="message">
+
+	<insert id="sendMessage" parameterType="Message">
+		INSERT INTO message (MessageNum, MessageSender, SenderNum, MessageReceiver, ReceiverNum, 
+		MessageOpenStatus, MessageTitle, MessageContent, MessageDate, MessageTrash)
+		VALUES (null, #{messageSender}, #{senderNum}, #{messageReceiver}, #{receiverNum},
+		#{messageOpenStatus}, #{messageTitle}, #{messageContent},now(),#{messageTrash})
+	</insert>
+
+	<select id="inboxList" parameterType="Integer" resultType="Message">
+		SELECT * FROM message WHERE ReceiverNum = #{receiverNum} and messageTrash = 1
+	</select>
+	
+	<select id="sentboxList" parameterType="Integer" resultType="Message">
+		SELECT * FROM message WHERE SenderNum = #{senderNum}
+	</select>
+	
+	<select id="openMessage" parameterType="Integer" resultType="Message">
+		SELECT * FROM message WHERE MessageNum = #{messageNum}
+	</select>
+	
+	<update id="trashMessage" parameterType="Integer">
+		UPDATE message
+		SET messageTrash = 0
+		WHERE messageNum = #{messageNum}
+	</update>
+	
+	<select id="trashcanList" parameterType="Integer" resultType="Message">
+		SELECT * FROM message 
+		WHERE messageTrash = 0 AND (ReceiverNum = #{userNum} OR SenderNum = #{userNum})
+	</select>
+	
+	<delete id="deleteMessage" parameterType="Integer">
+		DELETE FROM message
+		WHERE messageTrash = 0 AND MessageNum = #{messageNum}
+	</delete>
+	
+	<update id="checkMessage" parameterType="Integer">
+		UPDATE message
+		SET MessageOpenStatus = 0
+		WHERE MessageNum = #{messageNum} AND MessageOpenStatus = 1
+	</update>
+
+</mapper>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration 
+          PUBLIC "-//mybatis.org/DTD Config 3.0//EN" 
+          "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+
+	
+	<!-- MyBatis에 대한 기본 세팅정보 -->
+	 <settings>
+	 	<!-- Data가 없을경우 NULL로 처리 -->
+	 	<setting name="jdbcTypeForNull" value="NULL"/>
+	 	<!-- Log4J와 MyBatis 연동해서 Query문과 실행결과를 log로 출력 -->
+	 	<setting name="logImpl" value="LOG4J2"/>
+	 </settings>
+	 
+	 <typeAliases>
+	 	<typeAlias type="team.spring.runup.user.vo.User" alias="User"/>
+	 	<typeAlias type="team.spring.runup.running.vo.Running" alias="Running"/>
+	 	<typeAlias type="team.spring.runup.running.vo.Runup" alias="Runup"/>
+	 	<typeAlias type="team.spring.runup.running.vo.RunCalender" alias="RunCalender"/>
+	 	<typeAlias type="team.spring.runup.running.vo.RunningPieOne" alias="RunningPieOne"/>
+	 	<typeAlias type="team.spring.runup.running.vo.RunningLineOne" alias="RunningLineOne"/>
+	 	<typeAlias type="team.spring.runup.running.vo.RunningBarOne" alias="RunningBarOne"/>
+	 	<typeAlias type="team.spring.runup.running.vo.RunningBarTwo" alias="RunningBarTwo"/>
+	 	<typeAlias type="team.spring.runup.running.vo.Point" alias="Point"/>
+	 	<typeAlias type="team.spring.runup.message.vo.Message" alias="Message"/>
+	 	<typeAlias type="team.spring.runup.running.vo.Category" alias="Category"/>
+		<typeAlias type="team.spring.runup.question.vo.Question" alias="Question"/>
+
+		<typeAlias type="team.spring.runup.question.vo.QuestionComment" alias="QuestionComment"/>
+		<typeAlias type="team.spring.runup.question.vo.QuestionLike" alias="QuestionLike"/>
+
+		<typeAlias type="team.spring.runup.report.vo.Report" alias="Report"/>
+		<typeAlias type="team.spring.runup.fountain.vo.Fountain" alias="Fountain"/>
+		<typeAlias type="team.spring.runup.fountain.vo.FountainList" alias="FountainList"/>
+		<typeAlias type="team.spring.runup.donation.vo.Donation" alias="Donation"/>
+		<typeAlias type="team.spring.runup.chatMessage.vo.ChatMessage" alias="ChatMessage"/>
+	 </typeAliases>
+
+
+</configuration>
